@@ -14,8 +14,8 @@ pipeline {
         stage('install dependencies'){
             steps{
                 sh '''
-                sudo apt-get update
-                sudo apt-get install -y packer awscli
+                 apt-get update
+                 apt-get install -y packer awscli
                 '''
             }
         }
