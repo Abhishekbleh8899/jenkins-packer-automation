@@ -3,7 +3,7 @@ variable "aws_region" {
 }
 
 variable "aws_ami_name" {
-  default = "ubuntu-docker-jenkins-terraform-elasticsearch-ami"
+  default = "ubuntu-docker-jenkins--elasticsearch-goldenimage"
 }
 
 variable "aws_instance_type" {
@@ -42,8 +42,7 @@ build {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install -y git htop",
-      
-      # Install Docker
+        # Install Docker
       "sudo apt-get install -y ca-certificates curl gnupg",
       "sudo install -m 0755 -d /etc/apt/keyrings",
       "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/keyrings/docker.asc > /dev/null",
@@ -62,8 +61,6 @@ build {
       "echo \"deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/\" | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null",
       "sudo apt-get update",
       "sudo apt-get install -y jenkins",
-      "sudo systemctl enable jenkins",
-      "sudo systemctl start jenkins",
 
       # Install Ansible
       "sudo apt-add-repository --yes --update ppa:ansible/ansible",
@@ -80,28 +77,26 @@ build {
       "echo \"deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg] https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/8.0 multiverse\" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list",
       "sudo apt-get update",
       "sudo apt-get install -y mongodb-org",
-      "sudo systemctl enable mongod",
-      "sudo systemctl start mongod",
-      #Install Elasticsearch
-      "wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.17.2-linux-x86_64.tar.gz",
-      "wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.17.2-linux-x86_64.tar.gz.sha512",
-      "shasum -a 512 -c elasticsearch-8.17.2-linux-x86_64.tar.gz.sha512",
-      "tar -xzf elasticsearch-8.17.2-linux-x86_64.tar.gz",
-      "cd elasticsearch-8.17.2/",
+     
+      
+      # Add Elasticsearch GPG key
+      "wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -",
+      
+      # Add Elasticsearch repository
+      "echo \"deb https://artifacts.elastic.co/packages/7.x/apt stable main\" | sudo tee /etc/apt/sources.list.d/elastic-7.x.list",
+      
+      # Update package lists and install Elasticsearch
       "sudo apt-get update",
       "sudo apt-get install -y elasticsearch",
-      "sudo systemctl enable elasticsearch",
-      "sudo systemctl start elasticsearch",
-     
 
-      # Final verification
-      "git --version",
-      "docker --version",
-      "java -version",
       "jenkins --version",
+      "docker --version",
       "ansible --version",
       "terraform --version",
-      "mongosh --version"
+      "mongosh --version",
+      "elasticsearch --version"
+      
+      
     ]
   }
 }
