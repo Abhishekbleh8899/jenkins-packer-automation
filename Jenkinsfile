@@ -7,7 +7,8 @@ pipeline {
     stages {
         stage('checkout code'){
             steps{
-                git 'https://github.com/Abhishekbleh8899/jenkins-packer-automation.git'
+                git branch: 'main',
+                url: 'https://github.com/Abhishekbleh8899/jenkins-packer-automation.git'
             }
         }
         stage('install dependencies'){
