@@ -21,7 +21,7 @@ pipeline {
         }
         stage('validate packer template'){
             steps{
-                sh 'packer init $PACKER_TEMPLATE'
+            
                 sh 'packer validate $PACKER_TEMPLATE'
             }
         }
