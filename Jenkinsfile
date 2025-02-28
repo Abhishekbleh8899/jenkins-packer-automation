@@ -1,4 +1,5 @@
 pipeline {
+    agent any
     environment {
         PACKER_TEMPLATE = 'task.pkr.hcl'
         AWS_CREDENTIALS = 'credentials(aws-creds)'
@@ -29,15 +30,15 @@ pipeline {
             }
         }
     }
-} post{
-
-    success{
-        echo 'AMI build successful'
+    
+    post {
+        success {
+            echo 'AMI build successful'
+        }
+        failure {
+            echo 'AMI build failed'
+        }
     }
-    failure{
-        echo 'AMI build failed'
-    }
-    }
-
+}
 
 
