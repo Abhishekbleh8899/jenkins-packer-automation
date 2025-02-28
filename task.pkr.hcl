@@ -93,9 +93,8 @@ build {
       "docker --version",
       "ansible --version",
       "terraform --version",
-      "mongosh --version",
-      "elasticsearch --version"
-      
+      "mongosh --version"
+
       
     ]
   }
